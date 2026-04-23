@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import { createToken } from "../utils/createToken.js";
 
+// REGISTER USER CONTROLLER
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -52,6 +53,56 @@ export const registerUser = async (req, res) => {
       success: true,
       token,
       user: { id: user._id, name: user.name, email: user.email },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error" || error.message,
+    });
+  }
+};
+
+// LOGIN USER CONTROLLER
+export const loginUser = async (req, res) => {
+  const { name, email } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Fill in all fields",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    // Check if user is not found
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Check if password matches for the user
+    const matchedPassword = await bcrypt.compare(password, user.password);
+    if (!matchedPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // CREATE LOGIN POKEN FOR THE USER WHEN LOGIN IS SUCCESSFUL
+    const token = createToken(user._id);
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.error(error);
