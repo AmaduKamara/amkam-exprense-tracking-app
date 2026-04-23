@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/userModel.js";
 
-const authMiddleware = async (req, resizeBy, next) => {
+const authMiddleware = async (req, res, next) => {
   // Grab the token
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
