@@ -175,3 +175,50 @@ export const updateUser = async (req, res) => {
     }
   }
 };
+
+// UPDATE USER'S PASSWORD
+export const updatePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword || newPassword.length < 8) {
+    return res.status(400).json({
+      success: false,
+      message: "Password invalid or too short.",
+    });
+  }
+
+  try {
+    // Find and select the user's password
+    const user = await user.findById(req.user.id).select("password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Compare the passwords
+    const matchedPassowrd = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+
+    if (!matchedPassowrd) {
+      return res.status(401).json({
+        success: false,
+        message: "Current Password is incorrect",
+      });
+    }
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error" || error.message,
+    });
+  }
+};
