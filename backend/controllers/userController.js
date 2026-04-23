@@ -112,3 +112,27 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+// GET LOGGEDIN USER OR CURRENTUSER DETAILS
+export const getCurrentUser = async (req, res) => {
+  try {
+    // Get user
+    const user = await User.findById(req.user.id).select("name email");
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Return the user
+    res.json({ success: true, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error" || error.message,
+    });
+  }
+};
