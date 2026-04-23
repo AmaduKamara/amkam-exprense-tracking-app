@@ -136,3 +136,42 @@ export const getCurrentUser = async (req, res) => {
     });
   }
 };
+
+// UPDATE A USER
+export const updateUser = async (req, res) => {
+  const { name, email } = req.body;
+  if (!name || !email || !vallidator.isEmail(email)) {
+    return res.ststus(400).json({
+      success: false,
+      message: "Valid name and email are required",
+    });
+
+    try {
+      const exist = await User.findOne({ email, _id: { $ne: req.user.id } });
+      if (exist) {
+        return res.status(409).json({
+          success: false,
+          message: "Email already in use",
+        });
+      }
+
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        { name, email },
+        { new: true, runValidators: true, select: "name email" },
+      );
+
+      // Return updated user
+      res.json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Server error" || error.message,
+      });
+    }
+  }
+};
