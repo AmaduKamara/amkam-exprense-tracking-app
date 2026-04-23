@@ -48,7 +48,7 @@ export const registerUser = async (req, res) => {
     // Create token
     const token = createToken(user._id);
 
-    res.ststus(201).json({
+    res.status(201).json({
       success: true,
       token,
       user: { id: user._id, name: user.name, email: user.email },
@@ -64,8 +64,8 @@ export const registerUser = async (req, res) => {
 
 // LOGIN USER CONTROLLER
 export const loginUser = async (req, res) => {
-  const { name, email } = req.body;
-  if (!name || !email || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     return res.status(400).json({
       success: false,
       message: "Fill in all fields",

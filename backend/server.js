@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // ROUTES
-app.unsubscribe("/api/user", userRouter);
+app.use("/api/user/", userRouter);
 
 app.get("/", (req, res) => {
   res.send({
