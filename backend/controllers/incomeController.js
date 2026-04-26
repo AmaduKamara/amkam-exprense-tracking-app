@@ -146,8 +146,45 @@ export const downloadIncomeExcell = async (req, res) => {
     const worksheet = XLSX.utils.json_to_sheet(plainData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Income");
-    XLSX.writeFile(workbook, "income_details.xlsx")
-    res.download("income_details.xlsx")
+    XLSX.writeFile(workbook, "income_details.xlsx");
+    res.download("income_details.xlsx");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
+
+// Get income overview controller
+export const getIncomeOverview = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { range = "monthly" } = req.query;
+    const { start, end } = getDateRange(range);
+
+    const incomes = await Income.find({
+      userId,
+      date: { $gte: start, $lte: end },
+    }).sort({ date: -1 });
+
+    const totalIncome = incomes.reduce((acc, cur) => acc + cur.amount, 0);
+    const averageIncome = incomes.length > 0 ? totalIncome / incomes.length : 0;
+    const numberOfTransactions = incomes.length;
+
+    const recentTransactions = incomes.slice(0, 9);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        totalIncome,
+        averageIncome,
+        numberOfTransactions,
+        recentTransactions,
+        range,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
