@@ -301,6 +301,7 @@ export const expensePageStyles = {
     "flex items-center gap-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg transition-all text-sm hover:shadow-md",
 
   // Additional empty state style
+  // eslint-disable-next-line no-dupe-keys
   emptyStateSubtext: "text-sm text-gray-500 mt-2",
 
   // Timeframe positioning
@@ -506,7 +507,7 @@ export const navbarStyles = {
 
   // Dropdown menu styles
   dropdownMenu:
-    "absolute top-14 right-0 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-50",
+    "absolute top-14 right-0 w-70 bg-white rounded-xl shadow-lg border border-gray-100 z-50",
   dropdownHeader: "px-4 py-3 border-b border-gray-100",
   dropdownAvatar:
     "w-10 h-10 rounded-full bg-gradient-to-br from-teal-600 to-cyan-500 flex items-center justify-center text-white font-bold text-lg",
@@ -516,10 +517,10 @@ export const navbarStyles = {
   // Menu items
   menuItemContainer: "p-1.5",
   menuItem:
-    "w-full px-4 py-3 text-left hover:bg-gray-50 text-sm text-gray-700 flex items-center gap-3 rounded-lg",
+    "w-full px-4 py-3 text-left hover:bg-gray-50 text-sm text-gray-700 flex items-center gap-3 rounded-lg cursor-pointer",
   menuItemBorder: "p-1.5 border-t border-gray-100",
   logoutButton:
-    "flex w-full items-center gap-3 px-4 py-3 text-sm hover:bg-red-50 text-red-600 rounded-lg",
+    "flex w-full items-center gap-3 px-4 py-3 text-sm hover:bg-red-50 text-red-600 rounded-lg cursor-pointer",
 };
 
 // In src/assets/dummyStyles.js - add these styles
