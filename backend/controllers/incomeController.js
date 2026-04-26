@@ -51,7 +51,7 @@ export const getAllIncome = async (req, res) => {
 
   try {
     // Find income for that particular user and sort it to the lates income
-    const income = (await Income.find({ userId })).toSorted({ date: -1 });
+    const income = await Income.find({ userId }).sort({ date: -1 });
 
     // Return the json response of the income fetched
     res.status(200).json({ success: true, income });
