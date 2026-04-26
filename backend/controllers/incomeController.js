@@ -27,7 +27,7 @@ export const addIncome = async (req, res) => {
     await newIncome.save();
 
     // Return success message
-    res.json({
+    res.status(201).json({
       success: true,
       message: "Income added successfully!",
     });
@@ -50,7 +50,47 @@ export const getAllIncome = async (req, res) => {
     const income = (await Income.find({ userId })).toSorted({ date: -1 });
 
     // Return the json response of the income fetched
-    res.json(income);
+    res.status(200).json({ success: true, income });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
+
+// Update an income controller
+export const updateIncome = async (req, res) => {
+  // Get the id from the req.parames
+  const { id } = req.params;
+  // Get the user id from the req.user
+  const userId = req.user._id;
+  // Get the data to be updated
+  const { description, amount } = req.body;
+
+  try {
+    // Find the income data to be update
+    const updatedIncome = await Income.findOneAndUpdate(
+      { _id: id, userId },
+      { description, date },
+      { new: true },
+    );
+
+    // If the updated income not found
+    if (!updatedIncome) {
+      return res.status(404).json({
+        success: false,
+        message: "Income not found",
+      });
+    }
+
+    // Return updated income
+    res.status(200).json({
+      success: true,
+      message: "Income updated successfully",
+      data: updatedIncome,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
