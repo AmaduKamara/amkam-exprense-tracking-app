@@ -33,6 +33,7 @@ const authMiddleware = async (req, res, next) => {
     // Return the user if found to the requested user in the request
     req.user = user;
 
+    // Call next, for the next() process to run so that the exucution is not paused or stop and allow the next middleware to run.
     next();
   } catch (error) {
     console.error("JWT verification failed: ", error);
