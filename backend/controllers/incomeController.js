@@ -7,7 +7,7 @@ import getDateRange from "../utils/dataFilter.js";
 export const addIncome = async (req, res) => {
   // Get the user id from the req.user
   const userId = await req.user._id;
-  // Get the income date from the req.body
+  // Get the income data from the req.body
   const { description, amount, category, date } = req.body;
 
   try {
