@@ -175,7 +175,7 @@ export const getExpenseOverview = async (req, res) => {
       expenses.length > 0 ? totalExpense / expenses.length : 0;
     const numberOfTransactions = expenses.length;
 
-    const recentTransactions = expenses.length.slice(0, 5);
+    const recentTransactions = expenses.slice(0, 5);
 
     res.status(200).json({
       success: true,

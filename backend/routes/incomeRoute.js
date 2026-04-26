@@ -18,4 +18,4 @@ incomeRouter.get("/downloadexcel", authMiddleware, downloadIncomeExcel);
 incomeRouter.delete("/delete/:id", authMiddleware, deleteIncome);
 incomeRouter.get("/overview", authMiddleware, getIncomeOverview);
 
-export default incomeRouter
+export default incomeRouter;
