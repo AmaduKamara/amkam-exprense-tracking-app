@@ -1,4 +1,4 @@
-import XLSL from "xlsx";
+import XLSX from "xlsx";
 
 import Income from "../models/incomeModel.js";
 import getDateRange from "../utils/dataFilter.js";
@@ -129,7 +129,7 @@ export const deleteIncome = async (req, res) => {
   }
 };
 
-export const downloadIncomeExcell = async (req, res) => {
+export const downloadIncomeExcel = async (req, res) => {
   // Get the user id from the req.user
   const userId = req.user._id;
 
