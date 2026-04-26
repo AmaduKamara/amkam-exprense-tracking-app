@@ -155,3 +155,41 @@ export const downloadExpenseExcel = async (req, res) => {
     });
   }
 };
+
+// Get expense overview controller
+export const getExpenseOverview = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { range = "monthly" } = req.query;
+    const { start, end } = getDateRange(range);
+
+    const expenses = await Expense.find({
+      userId,
+      date: { $gte: start, $lte: end },
+    }).sort({ date: -1 });
+
+    const totalExpense = expenses.reduce((acc, cur) => acc + cur.amount, 0);
+    const averageExpense =
+      expenses.length > 0 ? totalExpense / expenses.length : 0;
+    const numberOfTransactions = expenses.length;
+
+    const recentTransactions = expenses.length.slice(0, 5);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        totalExpense,
+        averageExpense,
+        numberOfTransactions,
+        recentTransactions,
+        range,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
