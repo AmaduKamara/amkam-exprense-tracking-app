@@ -58,7 +58,7 @@ export const registerUser = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: error.message || "An internal server error occurred",
+      message: "An internal server error occurred",
     });
   }
 };
@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server error" || error.message,
+      message: "An internal server error occurred",
     });
   }
 };
@@ -136,7 +136,7 @@ export const getCurrentUser = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server error" || error.message,
+      message: "An internal server error occurred",
     });
   }
 };
@@ -180,7 +180,7 @@ export const updateUser = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server error" || error.message,
+      message: "An internal server error occurred",
     });
   }
 };
