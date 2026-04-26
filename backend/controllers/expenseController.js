@@ -1,4 +1,4 @@
-import Expense from "../controllers/expenseController.js";
+import Expense from "../models/expenseModel.js";
 import getDateRange from "../utils/dataFilter.js";
 
 // Add expense
