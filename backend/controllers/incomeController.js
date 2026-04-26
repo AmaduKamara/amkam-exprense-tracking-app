@@ -1,4 +1,8 @@
+import XLSL from "xlsx";
+
 import Income from "../models/incomeModel.js";
+import getDateRange from "../utils/dataFilter.js";
+
 // Add income controller
 export const addIncome = async (req, res) => {
   // Get the user id from the req.user
@@ -116,6 +120,34 @@ export const deleteIncome = async (req, res) => {
       success: true,
       message: "Income deleted successfully",
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
+
+export const downloadIncomeExcell = async (req, res) => {
+  // Get the user id from the req.user
+  const userId = req.user._id;
+
+  try {
+    const income = await Income.find({ userId }).sort({ date: -1 });
+    const plainData = income.map((inc) => ({
+      Description: inc.description,
+      Amount: inc.amount,
+      Category: inc.category,
+      Date: new Date(inc.date).toLocaleDateString(),
+    }));
+
+    // Create an excel file to be downloaded
+    const worksheet = XLSX.utils.json_to_sheet(plainData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Income");
+    XLSX.writeFile(workbook, "income_details.xlsx")
+    res.download("income_details.xlsx")
   } catch (error) {
     console.log(error);
     res.status(500).json({
