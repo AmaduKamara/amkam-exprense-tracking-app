@@ -99,3 +99,28 @@ export const updateIncome = async (req, res) => {
     });
   }
 };
+
+// Delete Income controller
+export const deleteIncome = async (req, res) => {
+  try {
+    const income = await Income.findByIdAndDelete({ _id: req.params.id });
+    if (!income) {
+      return res.status(404).json({
+        successs: false,
+        message: "Income not found",
+      });
+    }
+
+    // If income is found, it is deleted
+    return res.status(200).json({
+      success: true,
+      message: "Income deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
