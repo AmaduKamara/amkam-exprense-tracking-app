@@ -12,12 +12,17 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 
+  // To get the token, split the auth header's ["Bearer", "Token"] to get the token-[1] from the returned array of the authHeader after the Bearer
   const token = authHeader.split(" ")[1];
 
   // Veryfy token
   try {
+    // Verify the token and the secret if are original and valid
     const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find the user by the verified payload's id returned and then select out the password so it doesn't get returned
     const user = await User.findById(payload.id).select("-password");
+    // Return user not found if not found
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -25,6 +30,7 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
+    // Return the user if found to the requested user in the request
     req.user = user;
 
     next();
