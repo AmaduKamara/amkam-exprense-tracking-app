@@ -74,10 +74,10 @@ export const updateIncome = async (req, res) => {
   const { description, amount } = req.body;
 
   try {
-    // Find the income data to be update
+    // Find the income data to be updated
     const updatedIncome = await Income.findOneAndUpdate(
       { _id: id, userId },
-      { description, date },
+      { description, amount },
       { new: true },
     );
 
