@@ -39,3 +39,23 @@ export const addIncome = async (req, res) => {
     });
   }
 };
+
+// Get All Income controller
+export const getAllIncome = async (req, res) => {
+  // Get the user id from the req.user
+  const userId = req.user._id;
+
+  try {
+    // Find income for that particular user and sort it to the lates income
+    const income = (await Income.find({ userId })).toSorted({ date: -1 });
+
+    // Return the json response of the income fetched
+    res.json(income);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
