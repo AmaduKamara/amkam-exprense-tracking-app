@@ -1,4 +1,4 @@
-import exporess from "express";
+import express from "express";
 import {
   getCurrentUser,
   loginUser,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/auth.js";
 
-const userRouter = new exporess.Router();
+const userRouter = new express.Router();
 
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
