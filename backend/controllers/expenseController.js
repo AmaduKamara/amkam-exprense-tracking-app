@@ -1,4 +1,4 @@
-import Expense from "../controllers/incomeController.js";
+import Expense from "../controllers/expenseController.js";
 import getDateRange from "../utils/dataFilter.js";
 
 // Add expense
@@ -33,6 +33,26 @@ export const addExpense = async (req, res) => {
       success: true,
       message: "Expense added successfully!",
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
+
+// Get All Expense controller
+export const getAllExpense = async (req, res) => {
+  // Get the user id from the req.user
+  const userId = req.user._id;
+
+  try {
+    // Find expense for that particular user and sort it to the lates expense
+    const expense = await Expense.find({ userId }).sort({ date: -1 });
+
+    // Return the json response of the expense fetched
+    res.status(200).json({ success: true, expense });
   } catch (error) {
     console.log(error);
     res.status(500).json({
