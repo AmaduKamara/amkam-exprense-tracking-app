@@ -126,3 +126,32 @@ export const deleteExpense = async (req, res) => {
     });
   }
 };
+
+// Download Expense Excelsheet controller
+export const downloadExpenseExcel = async (req, res) => {
+  // Get the user id from the req.user
+  const userId = req.user._id;
+
+  try {
+    const expense = await Expense.find({ userId }).sort({ date: -1 });
+    const plainData = expense.map((exp) => ({
+      Description: exp.description,
+      Amount: exp.amount,
+      Category: exp.category,
+      Date: new Date(exp.date).toLocaleDateString(),
+    }));
+
+    // Create an excel file to be downloaded
+    const worksheet = XLSX.utils.json_to_sheet(plainData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Expense");
+    XLSX.writeFile(workbook, "expense_details.xlsx");
+    res.download("expense_details.xlsx");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occurred",
+    });
+  }
+};
