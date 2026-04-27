@@ -480,8 +480,7 @@ export const loginStyles = {
 export const navbarStyles = {
   // Layout and container styles
   header: "sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm",
-  container:
-    "flex items-center justify-between px-4 py-3 md:px-6",
+  container: "flex items-center justify-between px-4 py-3 md:px-6",
 
   // Logo styles
   logoContainer: "flex items-center gap-0 cursor-pointer",
@@ -670,7 +669,7 @@ export const sidebarStyles = {
 
   // Footer section
   footerContainer: {
-    base: "border-t border-gray-100 p-4",
+    base: "border-t border-gray-100 p-4 absolute bottom-0 left-0",
     collapsed: "px-3",
     expanded: "px-6",
   },
@@ -696,7 +695,7 @@ export const sidebarStyles = {
   mobileHeader:
     "p-6 flex justify-between items-center border-b border-gray-100",
   mobileUserContainer: "flex pt-28 items-center gap-3",
-  mobileCloseButton: "p-2 rounded-lg hover:bg-gray-100",
+  mobileCloseButton: "p-2 rounded-lg hover:bg-gray-100 mt-4 bg-gray-200",
 
   mobileMenuList: "space-y-1",
   mobileMenuItem: {
